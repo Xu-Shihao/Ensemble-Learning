@@ -71,6 +71,33 @@ def open_file(file_name):
     return X_tensor, Y_tensor, FeatureNames
 
 def CV_Para_selection(X_tensor, Y_tensor, Classifier_list,random_seed_num=21,FeatureSetName='Doc2Vec'):
+
+    '''
+    this funtion is aiming to perform the hyper-parameter tuning and feature selection
+
+    Parameters
+    ----------
+    X_tensor:
+            input features
+    Y_tensor:
+            input labels
+    Classifier_list:
+            list of classifier names that you want to use, should match the name in get_model() function
+    random_seed_num:
+            fix the random seed of classifier and oversampling method
+    FeatureSetName:
+            use to provide the name of current feature set name, as we may not want to apply feature selection for some
+            specific feature set (e.g., like doc2vec)
+
+    Return
+    ----------
+    Selected_cf:
+            the classifier model after tuning the hyper-parameters
+    Selected_fs
+            the feature selection model
+    best_scores
+            the classification accuracy (within grid search) of best classifier model and best feature selection model
+    '''
     pipeline_step_variance = 'variance_reduce'
     pipeline_step_smote = 'oversample'
     pipeline_step0 = 'StandardScaler'
