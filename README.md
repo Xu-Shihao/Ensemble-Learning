@@ -36,7 +36,7 @@ imbalance-learn == 0.3.3
 numpy==1.14.5
 ```
 
-Please also follow the Example.csv file in ./data folder to form your own data
+Please also follow the Example.csv file in ./features folder to form your own data
 
 The data should be like:
 
