@@ -145,10 +145,10 @@ def main():
     real_label=[]
     loop=0
 
-    # skf=StratifiedKFold(n_splits=10)
-    # for train_index, test_index in skf.split(range(len(LoadFeatures_pool[0])),doc_label):
-    loo=LeaveOneOut()
-    for train_index, test_index in loo.split(range(len(LoadFeatures_pool[0]))):
+    skf=StratifiedKFold(n_splits=10)
+    for train_index, test_index in skf.split(range(len(LoadFeatures_pool[0])),doc_label):
+    # loo=LeaveOneOut()
+    # for train_index, test_index in loo.split(range(len(LoadFeatures_pool[0]))):
         start_time = time.time()
         print(
             "===============CV=" + str(loop) + "==================")

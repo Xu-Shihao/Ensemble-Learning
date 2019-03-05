@@ -2,17 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c7c73e92-6e11-434a-abcb-60fdd61d8ead" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/result/Audio_cf_results.csv" beforeDir="false" afterPath="$PROJECT_DIR$/result/Audio_cf_results.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/result/Important_features.csv" beforeDir="false" afterPath="$PROJECT_DIR$/result/Important_features.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sklearn_classifier.py" beforeDir="false" afterPath="$PROJECT_DIR$/sklearn_classifier.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tmp/CV_0_Conver.pickle" beforeDir="false" afterPath="$PROJECT_DIR$/tmp/CV_0_Conver.pickle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tmp/CV_0_Diction.pickle" beforeDir="false" afterPath="$PROJECT_DIR$/tmp/CV_0_Diction.pickle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tmp/CV_0_DisVoice.pickle" beforeDir="false" afterPath="$PROJECT_DIR$/tmp/CV_0_DisVoice.pickle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tmp/CV_0_Doc2Vec.pickle" beforeDir="false" afterPath="$PROJECT_DIR$/tmp/CV_0_Doc2Vec.pickle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tmp/CV_0_LDA.pickle" beforeDir="false" afterPath="$PROJECT_DIR$/tmp/CV_0_LDA.pickle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tmp/CV_0_LIWC.pickle" beforeDir="false" afterPath="$PROJECT_DIR$/tmp/CV_0_LIWC.pickle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tmp/CV_0_OpenSmile.pickle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/features/Diction_norm_RRIS_DSH.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/features/DisVoice_RRIS_DSH.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/features/Doc2Vec_RRIS_100d_400_DSH.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/features/LDA_RRIS_DHS.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/features/LIWC_norm_RRIS_DSH.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_classification.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_classification.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -340,7 +335,8 @@
         <counts>
           <entry key="project.closed" value="1" />
           <entry key="project.open.time.1" value="1" />
-          <entry key="project.opened" value="1" />
+          <entry key="project.open.time.4" value="1" />
+          <entry key="project.opened" value="2" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
@@ -369,16 +365,16 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main_classification.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="179">
-              <caret line="294" selection-start-line="294" selection-end-line="295" selection-end-column="14" />
+            <state relative-caret-position="124">
+              <caret line="150" column="17" selection-start-line="150" selection-start-column="17" selection-end-line="150" selection-end-column="17" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/sklearn_classifier.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="189">
@@ -390,7 +386,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test_comb.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="125">
+            <state relative-caret-position="4368">
               <caret line="208" selection-start-line="208" selection-end-line="208" />
             </state>
           </provider>
@@ -479,14 +475,14 @@
         <option value="$PROJECT_DIR$/read_tmp.py" />
         <option value="$PROJECT_DIR$/result/Audio_cf_results.csv" />
         <option value="$PROJECT_DIR$/test_comb.py" />
-        <option value="$PROJECT_DIR$/main_classification.py" />
         <option value="$PROJECT_DIR$/sklearn_classifier.py" />
+        <option value="$PROJECT_DIR$/main_classification.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="686" />
-    <option name="y" value="107" />
+  <component name="ProjectFrameBounds" extendedState="7">
+    <option name="x" value="685" />
+    <option name="y" value="106" />
     <option name="width" value="1230" />
     <option name="height" value="1065" />
   </component>
@@ -495,6 +491,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -512,11 +509,15 @@
               <item name="Ensemble_learning_template_0220" type="462c0819:PsiDirectoryNode" />
               <item name="result" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="Ensemble_learning_template_0220" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Ensemble_learning_template_0220" type="462c0819:PsiDirectoryNode" />
+              <item name="tmp" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -551,7 +552,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.test_comb">
+  <component name="RunManager" selected="Python.main_classification">
     <configuration name="LOO Cross-Validation" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="session_total" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -666,8 +667,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.test_comb" />
         <item itemvalue="Python.main_classification" />
+        <item itemvalue="Python.test_comb" />
         <item itemvalue="Python.sklearn_classifier" />
         <item itemvalue="Python.read_tmp" />
         <item itemvalue="Python.LOO Cross-Validation" />
@@ -698,13 +699,14 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.13284865" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.13284865" />
       <window_info id="Structure" order="1" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32907802" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.3134752" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.45531914" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -861,15 +863,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/test_comb.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="125">
+        <state relative-caret-position="4368">
           <caret line="208" selection-start-line="208" selection-end-line="208" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/main_classification.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="179">
-          <caret line="294" selection-start-line="294" selection-end-line="295" selection-end-column="14" />
         </state>
       </provider>
     </entry>
@@ -877,6 +872,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="189">
           <caret line="98" column="85" selection-start-line="98" selection-start-column="85" selection-end-line="98" selection-end-column="85" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main_classification.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="124">
+          <caret line="150" column="17" selection-start-line="150" selection-start-column="17" selection-end-line="150" selection-end-column="17" />
         </state>
       </provider>
     </entry>
