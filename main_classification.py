@@ -302,14 +302,13 @@ def Ensemble_Prediction(X_train, Y_train, X_test, Y_test, Classifier_list, inter
     #model_cf, model_fs, best_scores = CV_Para_selection(X_train, Y_train, Classifier_list,Random_seed,FeatureSetName)
 
     # following code is used to manually determine the classifier and feature selection model
-    model_cf = [get_model('Logistic Regression'), get_model('SVM'), get_model('Gradient Boosting'),
-                get_model('AdaBoost'), get_model('RandomForest')]
-    model_fs = [SelectPercentile(feature_selection.f_classif, percentile=100),
-                SelectPercentile(feature_selection.f_classif, percentile=100),
-                SelectPercentile(feature_selection.f_classif, percentile=100),
-                SelectPercentile(feature_selection.f_classif, percentile=100),
-                SelectPercentile(feature_selection.f_classif, percentile=100)]
-    best_scores = [0.6, 0.6, 0.6, 0.6, 0.6] # give weights to different classifiers
+    model_cf=[]
+    model_fs=[]
+    best_scores=[]
+    for model in Classifier_list:
+        model_cf.append(get_model(model))
+        model_fs.append(SelectPercentile(feature_selection.f_classif, percentile=100))
+        best_scores.append(0.6) # give weights to different classifiers
 
     inter_var.clf_model.append(model_cf)
     inter_var.fs_model.append(model_fs)

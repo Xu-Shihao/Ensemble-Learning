@@ -2,12 +2,23 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c7c73e92-6e11-434a-abcb-60fdd61d8ead" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/features/Diction_norm_RRIS_DSH.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/features/DisVoice_RRIS_DSH.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/features/Doc2Vec_RRIS_100d_400_DSH.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/features/LDA_RRIS_DHS.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/features/LIWC_norm_RRIS_DSH.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/features/Conver_RRIS_DSH.csv" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/main_classification.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_classification.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/result/Audio_cf_results.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/result/Important_features.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/result/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tmp/CV_0_Conver.pickle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tmp/CV_1_Conver.pickle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tmp/CV_2_Conver.pickle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tmp/CV_3_Conver.pickle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tmp/CV_4_Conver.pickle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tmp/CV_5_Conver.pickle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tmp/CV_6_Conver.pickle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tmp/CV_7_Conver.pickle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tmp/CV_8_Conver.pickle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tmp/CV_9_Conver.pickle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tmp/README.md" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -333,10 +344,11 @@
     <session id="-203233689">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="1" />
-          <entry key="project.open.time.1" value="1" />
+          <entry key="project.closed" value="2" />
+          <entry key="project.open.time.0" value="1" />
+          <entry key="project.open.time.1" value="2" />
           <entry key="project.open.time.4" value="1" />
-          <entry key="project.opened" value="2" />
+          <entry key="project.opened" value="4" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
@@ -368,8 +380,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main_classification.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="124">
-              <caret line="150" column="17" selection-start-line="150" selection-start-column="17" selection-end-line="150" selection-end-column="17" />
+            <state relative-caret-position="3402">
+              <caret line="207" column="43" selection-start-line="207" selection-start-column="43" selection-end-line="207" selection-end-column="43" />
             </state>
           </provider>
         </entry>
@@ -377,7 +389,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/sklearn_classifier.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="189">
+            <state relative-caret-position="1953">
               <caret line="98" column="85" selection-start-line="98" selection-start-column="85" selection-end-line="98" selection-end-column="85" />
             </state>
           </provider>
@@ -480,18 +492,16 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
-    <option name="x" value="685" />
-    <option name="y" value="106" />
-    <option name="width" value="1230" />
-    <option name="height" value="1065" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="-9" />
+    <option name="width" value="1590" />
+    <option name="height" value="1039" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -504,20 +514,11 @@
               <item name="Ensemble_learning_template_0220" type="462c0819:PsiDirectoryNode" />
               <item name="features" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="Ensemble_learning_template_0220" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Ensemble_learning_template_0220" type="462c0819:PsiDirectoryNode" />
-              <item name="result" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Ensemble_learning_template_0220" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Ensemble_learning_template_0220" type="462c0819:PsiDirectoryNode" />
-              <item name="tmp" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -698,14 +699,13 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
-    <editor active="true" />
+    <frame x="-7" y="0" width="1272" height="831" extended-state="0" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.13284865" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18218623" />
       <window_info id="Structure" order="1" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32907802" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32808024" />
       <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.45531914" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
@@ -811,34 +811,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/features/Diction_norm_RRIS_DSH.csv">
-      <provider selected="true" editor-type-id="csv-text-editor">
-        <state relative-caret-position="84">
-          <caret line="4" selection-start-line="4" selection-end-line="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/features/LIWC_norm_RRIS_DSH.csv">
-      <provider selected="true" editor-type-id="csv-text-editor">
-        <state relative-caret-position="84">
-          <caret line="4" selection-start-line="4" selection-end-line="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/features/LDA_RRIS_DHS.csv">
-      <provider selected="true" editor-type-id="csv-text-editor">
-        <state relative-caret-position="84">
-          <caret line="4" selection-start-line="4" selection-end-line="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/features/Doc2Vec_RRIS_100d_400_DSH.csv">
-      <provider selected="true" editor-type-id="csv-text-editor">
-        <state relative-caret-position="84">
-          <caret line="4" selection-start-line="4" selection-end-line="4" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/features/Diction_norm_RRIS_DSH.csv" />
+    <entry file="file://$PROJECT_DIR$/features/LIWC_norm_RRIS_DSH.csv" />
+    <entry file="file://$PROJECT_DIR$/features/LDA_RRIS_DHS.csv" />
+    <entry file="file://$PROJECT_DIR$/features/Doc2Vec_RRIS_100d_400_DSH.csv" />
     <entry file="file://$PROJECT_DIR$/read_tmp.py" />
     <entry file="file://$PROJECT_DIR$/util.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -861,24 +837,24 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test_comb.py">
+    <entry file="file://$PROJECT_DIR$/main_classification.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4368">
-          <caret line="208" selection-start-line="208" selection-end-line="208" />
+        <state relative-caret-position="3402">
+          <caret line="207" column="43" selection-start-line="207" selection-start-column="43" selection-end-line="207" selection-end-column="43" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/sklearn_classifier.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
+        <state relative-caret-position="1953">
           <caret line="98" column="85" selection-start-line="98" selection-start-column="85" selection-end-line="98" selection-end-column="85" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main_classification.py">
+    <entry file="file://$PROJECT_DIR$/test_comb.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="124">
-          <caret line="150" column="17" selection-start-line="150" selection-start-column="17" selection-end-line="150" selection-end-column="17" />
+        <state relative-caret-position="4368">
+          <caret line="208" selection-start-line="208" selection-end-line="208" />
         </state>
       </provider>
     </entry>
