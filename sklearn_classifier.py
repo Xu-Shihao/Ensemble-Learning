@@ -213,16 +213,16 @@ def get_model(name):
     elif name == 'MultinomialNB':
         return MultinomialNB()
     elif name == 'Gradient Boosting':
-        return GradientBoostingClassifier(n_estimators=100, max_features=1,random_state=random_seed_num)
+        return GradientBoostingClassifier(random_state=random_seed_num)
     elif name == 'KNeighborsClassifier':
         return KNeighborsClassifier(3)
     elif name == 'MLP':
-        return MLPClassifier(solver='lbfgs', max_iter=10000,random_state=random_seed_num)
+        return MLPClassifier(random_state=random_seed_num)
     elif name == 'NaiveBayes':
         return GaussianNB()
     elif name == "AdaBoost":
-        return AdaBoostClassifier(n_estimators=100,random_state=random_seed_num)
+        return AdaBoostClassifier(random_state=random_seed_num)
     elif name == "RandomForest":
-        return RandomForestClassifier(max_depth=4, n_estimators=100, max_features=1,random_state=random_seed_num)
+        return RandomForestClassifier(random_state=random_seed_num,class_weight='balanced')
     else:
         raise ValueError('No such model')
