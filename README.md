@@ -11,21 +11,17 @@ Multiple classifiers are implemented in the code:
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
-
-1. Ensemble learning: Soft Voting by Multiple Classifiers
+Ensemble learning: Soft Voting by Multiple Classifiers
 
 In every cross-validation loop, we seperat samples as training data and testing data. 10-fold cross-validation was formed on training data to determine the best parameters and number of top features for each classifier. Finally, training data were fitted by multiple optimized classifiers, and then soft voted the prediction scores of testing data with different weights (late fusion).
 
-Note：
-Late fusion: treat features in each feature set individually, only soft voting the final prediction results. This approach can be useful if the number of features in each dataset varies widely.
+Late fusion: treat features in each feature set individually, and soft vote the final prediction results of each classifier and each feature set. This approach can be useful if the number of features in each dataset varies widely.
 
 All metrics in each cross-validation are saved in ./tmp folder. Final results can be reproduced based on test_combine.py
 
 ### Prerequisites
 
 Please notice that: this code is only working on a binary classification task, and the feature should be numerical.
-
 
 What things you need:
 
