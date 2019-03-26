@@ -133,11 +133,9 @@ b. parameter tuning
 
 3. if you enable CV_Para_selection() function, in line 151 in sklearn_classifier.py, you need to take care two parameters of GridSearchCV() function:
 
-a. cv: how many fold applied to choose the best parameter
-b. n_jobs: how many CPUs are used to parallelly run the code, higher -> faster
+cv: how many fold applied to choose the best parameter
 
-
-
+n_jobs: how many CPUs are used to parallelly run the code, higher -> faster
 
 
 ## Authors
