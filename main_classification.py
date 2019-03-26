@@ -48,7 +48,7 @@ class ML_temp_file(object):
         pk.dump(self,fp)
 
 def main():
-    Classifier_list = [ 'Gradient Boosting']
+    Classifier_list = ['Logistic Regression', 'SVM', 'Gradient Boosting', 'AdaBoost', 'RandomForest']
     save_file_address = './result/Audio_cf_results.csv'
     imp_features_add = './result/Important_features.csv'
 
