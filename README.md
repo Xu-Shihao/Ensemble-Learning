@@ -134,6 +134,11 @@ cv: how many fold applied to choose the best parameter
 n_jobs: how many CPUs are used to parallelly run the code, higher -> faster
 
 
+## reference
+If you use this code for research purpose, please cite one of the following articles
+
+[1]. S. Xu, Z. Yang, D. Chakraborty, Y. Tahir, T. Maszczyk, Y. H. V. Chua, J. Dauwels, D. Thalmann, N. M. Thalmann, B. L. Tan, J. C. K. Lee, "Automated Verbal and Non-verbal Speech Analysis of Interviews of Individuals with Schizophrenia and Depression", 41th Annual International Conference of the IEEE Engineering in Medicine and Biology Society (EMBC'19)
+
 ## Authors
 
 XU SHIHAO
