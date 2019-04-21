@@ -9,6 +9,10 @@ Multiple classifiers are implemented in the code:
 4. Adaboost
 5. RandomForest
 
+## Diagram
+
+[[https://ibb.co/BsRJMVy]]
+
 ## Getting Started
 
 Ensemble learning: Soft Voting by Multiple Classifiers
