@@ -11,7 +11,7 @@ Multiple classifiers are implemented in the code:
 
 ## Diagram
 
-[[https://ibb.co/BsRJMVy]]
+<img src="doc/Classification_method.png" width="600">
 
 ## Getting Started
 
