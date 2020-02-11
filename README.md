@@ -17,7 +17,7 @@ Multiple classifiers are implemented in the code:
 
 Ensemble learning: Soft Voting by Multiple Classifiers
 
-In every cross-validation loop, we seperat samples as training data and testing data. 10-fold cross-validation was formed on training data to determine the best parameters and number of top features for each classifier. Finally, training data were fitted by multiple optimized classifiers, and then soft voted the prediction scores of testing data with different weights (late fusion).
+In every cross-validation loop, we seperat samples as training data and testing data. LOO-CV or 10-fold cross-validation were formed on training data to determine the best parameters and number of top features for each classifier. Finally, training data were fitted by multiple optimized classifiers, and then soft voted the prediction scores of testing data with different weights (late fusion).
 
 Late fusion: treat features in each feature set individually, and soft vote the final prediction results of each classifier and each feature set. This approach can be useful if the number of features in each dataset varies widely.
 
