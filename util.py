@@ -4,6 +4,7 @@
 import os
 import csv
 import numpy as np
+import pandas as pd
 
 def label_features(file_address):
     labeled_data=[]
@@ -149,6 +150,30 @@ def write_title_two_class(save_file_address):
                 ['Feature', '', 'patient', 'healthy', 'precision', "recall", "F-score", 'AUC', 'Acc', 'Baseline',
                  'classifier'])
 
+def write_classification_results_to_csv(feature_used, Acc, AUC_max, ConfuMatrix_max, save_file_address, ClfReport_,
+                           baseline, classifier_name, abbr):
+
+    class_num=len(ClfReport_[0])
+
+    if not os.path.exists(save_file_address):
+
+        contents=[['Feature', '']+sorted(abbr.split('_'))+['precision', "recall", "F-score", 'AUC', 'Acc', 'Baseline', 'classifier']]
+        for clf in range(class_num):
+            contents.append([feature_used, sorted(abbr.split('_'))[clf]]+ConfuMatrix_max[clf*class_num:(clf+1)*class_num].tolist()+[ClfReport_[0][clf], ClfReport_[1][clf],
+                 ClfReport_[2][clf], AUC_max, Acc, baseline,classifier_name])
+
+        df = pd.DataFrame(contents,index=None,columns=None)
+        df.to_csv(save_file_address,index=None,columns=None,header=None)
+
+    else:
+        contents=[]
+        for clf in range(class_num):
+            contents.append([feature_used, sorted(abbr.split('_'))[clf]]+ConfuMatrix_max[clf*class_num:(clf+1)*class_num].tolist()+[ClfReport_[0][clf], ClfReport_[1][clf],
+                 ClfReport_[2][clf], AUC_max, Acc, baseline,classifier_name])
+
+        df = pd.DataFrame(contents,index=None,columns=None)
+        with open(save_file_address, 'a') as f:
+            df.to_csv(f,index=None,columns=None,header=None)
 
 if __name__ == '__main__':
     print("This file provides utility functions")

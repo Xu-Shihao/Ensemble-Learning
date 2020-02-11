@@ -1,7 +1,8 @@
 import warnings
+
 warnings.filterwarnings(action='ignore', category=UserWarning, module='gensim')
 warnings.filterwarnings("ignore", category=DeprecationWarning)
-import os, glob,csv
+import os, glob, csv
 import statistics
 from collections import Counter
 from sklearn_classifier import open_file, get_model, CV_Para_selection
@@ -21,7 +22,8 @@ import pickle as pk
 import time
 from datetime import timedelta
 from sklearn.model_selection import LeaveOneOut, StratifiedKFold
-from util import write_result_two_class,write_title_two_class,write_result_three_class,write_title_three_class
+from util import write_result_two_class, write_title_two_class, write_result_three_class, write_title_three_class
+
 
 class ML_temp_file(object):
     '''
@@ -30,22 +32,24 @@ class ML_temp_file(object):
     different feature sets.
     '''
 
-    def __init__(self, cv_num, feature_set_name,clf_model, fs_model, best_score_in_grid_search, clf_scores, important_features,
-                 important_features_name,doc_label,true_label):
-        self.cv_num=cv_num
-        self.feature_set_name=feature_set_name
+    def __init__(self, cv_num, feature_set_name, clf_model, fs_model, best_score_in_grid_search, clf_scores,
+                 important_features,
+                 important_features_name, doc_label, true_label):
+        self.cv_num = cv_num
+        self.feature_set_name = feature_set_name
         self.clf_model = clf_model  # classification model
         self.fs_model = fs_model  # feature selection model
         self.best_score_in_grid_search = best_score_in_grid_search
         self.clf_scores = clf_scores
         self.important_features = important_features
         self.important_features_name = important_features_name
-        self.doc_label=doc_label
-        self.true_label=true_label
+        self.doc_label = doc_label
+        self.true_label = true_label
 
-    def to_pickle(self,path):
-        fp=open(path,"wb")
-        pk.dump(self,fp)
+    def to_pickle(self, path):
+        fp = open(path, "wb")
+        pk.dump(self, fp)
+
 
 def main():
     Classifier_list = ['Logistic Regression', 'SVM', 'Gradient Boosting', 'AdaBoost', 'RandomForest']
@@ -63,19 +67,50 @@ def main():
     else:
         print("ERROR: No feature set input")
 
+    # filter out depression patients with PHQ-9 Value smaller than 5
+    filter_file_name = []
+
     # load feature sets in csv files
     list_ = []
     LoadFeatures_pool = []
     FeatureSetName_pool = []
-    LoadFeatureNames_pool=[]
+    LoadFeatureNames_pool = []
     for file_ in file_addresses:
         FeatureSetName = os.path.basename(file_).split("_")[0]
         df = pd.read_csv(file_, index_col=0, header=0)
+
+        # filter out some files
+        for filter_file in filter_file_name:
+            try:
+                df = df.drop(filter_file)
+            except:
+                print("Error: Ignore file ", filter_file)
+
         list_.append(df)
         FeatureSetName_pool.append(FeatureSetName)
-        LoadFeatureNames=df.columns.tolist()[0:-1]
+        LoadFeatureNames = df.columns.tolist()[0:-1]
         LoadFeatureNames_pool.append(LoadFeatureNames)
         print("Info: Got the " + FeatureSetName + " Feature Set")
+
+    # # TODO:
+    # # load feature sets in csv files (LOO)
+    # # check whether samples are same
+    # for path in ['./features/Doc2Vec_embeddings/','./features/LDA_embeddings/']: #,'./features/LDA_embeddings/'
+    #     cv_nums = 0
+    #     file_name = '_'.join(os.path.basename(glob.glob(path + '/*_testing_CV_' + str(cv_nums) + '.csv')[0]).split('_')[:-3])
+    #     df_test = pd.read_csv(path + file_name + '_testing_CV_' + str(cv_nums) + '.csv', index_col=0, header=0)
+    #     df_train = pd.read_csv(path + file_name + '_training_CV_' + str(cv_nums) + '.csv', index_col=0, header=0)
+    #     df=pd.concat((df_test,df_train),axis=0)
+    #     FeatureSetName = file_name.split("_")[0]
+    #     list_.append(df)
+    #     FeatureSetName_pool.append(FeatureSetName)
+    #     if df.columns.tolist()[-1]=='Label':
+    #         LoadFeatureNames = df.columns.tolist()[0:-1]
+    #     else:
+    #         LoadFeatureNames = df.columns.tolist()
+    #     LoadFeatureNames_pool.append(LoadFeatureNames)
+    #     print("Info: Got the " + FeatureSetName + " Feature Set")
+
 
     # select the same items in multiple data sets
     common = list_[0].index
@@ -97,11 +132,14 @@ def main():
 
         # save features into LoadFeatures_pool
         for df_item in list_:
-            df_item.drop(["Label"], axis=1, inplace=True)
+            try:
+                df_item.drop(["Label"], axis=1, inplace=True)
+            except:
+                print('Info: doesnt have label')
             LoadFeatures_pool.append(df_item.loc[common_file_names].values.tolist())
 
     elif len(FeatureSetName_pool) == 1:
-        common=list_[0].index
+        common = list_[0].index
 
         # get the samples ID and labels
         common_file_names = common.tolist()
@@ -130,10 +168,11 @@ def main():
     # calculate the baseline accuracy based on majority class
     counter = Counter(doc_label)
     baseline = counter.most_common(1)[0][1] / len(doc_label)
+    print("Label: ", counter)
 
     # save the important feature counts in each LOOCV fold
-    selected_features_counting_pool=[]
-    selected_features_counting_num_pool=[]
+    selected_features_counting_pool = []
+    selected_features_counting_num_pool = []
     for Num_FeatureSet in range(len(FeatureSetName_pool)):
         selected_features_counting = np.zeros(len(LoadFeatureNames_pool[Num_FeatureSet]))
         selected_features_counting_num = 0
@@ -142,13 +181,14 @@ def main():
 
     scores = []
     predict_label = []
-    real_label=[]
-    loop=0
+    real_label = []
+    loop = 0
 
-    skf=StratifiedKFold(n_splits=10)
-    for train_index, test_index in skf.split(range(len(LoadFeatures_pool[0])),doc_label):
-    # loo=LeaveOneOut()
-    # for train_index, test_index in loo.split(range(len(LoadFeatures_pool[0]))):
+    # skf=StratifiedKFold(n_splits=10)
+    # for train_index, test_index in skf.split(range(len(LoadFeatures_pool[0])),doc_label):
+    loo = LeaveOneOut()
+    nsa_name="SH"
+    for train_index, test_index in loo.split(range(len(LoadFeatures_pool[0]))):
         start_time = time.time()
         print(
             "===============CV=" + str(loop) + "==================")
@@ -156,43 +196,135 @@ def main():
         Best_scores_pool = []
         pred_prob_pool = []
 
-
         for Num_FeatureSet in range(len(FeatureSetName_pool)):
 
-            # create tmp file
-            inter_var = ML_temp_file(cv_num=loop, feature_set_name=FeatureSetName_pool[Num_FeatureSet], clf_model=[],
-                                     fs_model=[], best_score_in_grid_search=[],
-                                     clf_scores=[], important_features=[],
-                                     important_features_name=[], doc_label=doc_label,true_label=[doc_label[x] for x in test_index])
+            F_list = ['corr','Diction','LIWC','OpenSmile','DisVoice','Conver','Movement','Affectiva','Opsis','OpenFace']
 
-            print('-----------' + FeatureSetName_pool[Num_FeatureSet] + '--------------')
-            X_train = [LoadFeatures_pool[Num_FeatureSet][x] for x in train_index]
-            Y_train = [doc_label[x] for x in train_index]
-            X_test = [LoadFeatures_pool[Num_FeatureSet][x] for x in test_index]
-            Y_Test = [doc_label[x] for x in test_index]
-            Best_scores, pred_prob, Important_features,inter_var = Ensemble_Prediction(X_train, Y_train, X_test, Y_Test,
-                                                         Classifier_list, inter_var,Random_seed,FeatureSetName_pool[Num_FeatureSet])
+            F_list_embeddings=['LDA','Doc2Vec']
 
-            # save best scores in CV grid search and the prediction scores of each classifier
-            Best_scores_pool = Best_scores_pool + Best_scores
-            pred_prob_pool = pred_prob_pool + pred_prob
+            if FeatureSetName_pool[Num_FeatureSet] in F_list:
+                save_tmp_file_add = './tmp/'+nsa_name+'_CV_' + str(loop) + '_' + str(FeatureSetName_pool[Num_FeatureSet]) + '.pickle'
+                if not os.path.exists(save_tmp_file_add):
+                    # create tmp file
+                    inter_var = ML_temp_file(cv_num=loop, feature_set_name=FeatureSetName_pool[Num_FeatureSet],
+                                             clf_model=[],
+                                             fs_model=[], best_score_in_grid_search=[],
+                                             clf_scores=[], important_features=[],
+                                             important_features_name=[], doc_label=doc_label,
+                                             true_label=[doc_label[x] for x in test_index])
 
-            # # get selected features
-            # get how many time current feature set was used
-            selected_features_counting_num=selected_features_counting_num_pool[Num_FeatureSet]
-            # get the feature selection number of current feature set
-            selected_features_counting=selected_features_counting_pool[Num_FeatureSet]
-            for item in Important_features:
-                selected_features_counting_num = selected_features_counting_num + 1
-                selected_features_counting[item] = selected_features_counting[item] + 1
-            selected_features_counting_pool[Num_FeatureSet]=selected_features_counting
-            selected_features_counting_num_pool[Num_FeatureSet]=selected_features_counting_num
 
-            # save information to tmp file
-            inter_var.clf_scores.append(pred_prob)
-            inter_var.important_features_name.append(LoadFeatureNames_pool[Num_FeatureSet])
-            save_tmp_file_add='./tmp/CV_'+str(loop)+'_'+str(inter_var.feature_set_name)+'.pickle'
-            inter_var.to_pickle(save_tmp_file_add)
+                    print('-----------' + FeatureSetName_pool[Num_FeatureSet] + '--------------')
+                    X_train = [LoadFeatures_pool[Num_FeatureSet][x] for x in train_index]
+                    Y_train = [doc_label[x] for x in train_index]
+                    X_test = [LoadFeatures_pool[Num_FeatureSet][x] for x in test_index]
+                    Y_Test = [doc_label[x] for x in test_index]
+
+                    X_train = np.array(X_train)
+                    Y_train = np.array(Y_train)
+                    X_test = np.array(X_test)
+                    Y_Test = np.array(Y_Test)
+
+                    print('Info: shape of traing data:', X_train.shape)
+                    print(Y_train,Y_Test)
+
+                    Best_scores, pred_prob, Important_features, inter_var = Ensemble_Prediction(X_train, Y_train, X_test, Y_Test,Classifier_list, inter_var,Random_seed, str(FeatureSetName_pool[Num_FeatureSet]))
+
+                    Best_scores_pool = Best_scores_pool + Best_scores
+                    pred_prob_pool = pred_prob_pool + pred_prob
+
+                    # # get selected features
+                    # get how many time current feature set was used
+                    selected_features_counting_num = selected_features_counting_num_pool[Num_FeatureSet]
+                    # get the feature selection number of current feature set
+                    selected_features_counting = selected_features_counting_pool[Num_FeatureSet]
+                    for item in Important_features:
+                        selected_features_counting_num = selected_features_counting_num + 1
+                        selected_features_counting[item] = selected_features_counting[item] + 1
+                    selected_features_counting_pool[Num_FeatureSet] = selected_features_counting
+                    selected_features_counting_num_pool[Num_FeatureSet] = selected_features_counting_num
+
+                    # save information to tmp file
+                    inter_var.clf_scores.append(pred_prob)
+                    inter_var.important_features_name.append(LoadFeatureNames_pool[Num_FeatureSet])
+                    save_tmp_file_add = './tmp/'+nsa_name+'_CV_' + str(loop) + '_' + str(inter_var.feature_set_name) + '.pickle'
+                    inter_var.to_pickle(save_tmp_file_add)
+                else:
+                    print('-----------' + FeatureSetName_pool[Num_FeatureSet] + '--------------')
+                    fr=open(save_tmp_file_add,'rb')
+                    load_file=pk.load(fr)
+                    Best_scores=load_file.best_score_in_grid_search[0]
+                    pred_prob=load_file.clf_scores[0]
+
+                    Best_scores_pool = Best_scores_pool + Best_scores
+                    pred_prob_pool=pred_prob_pool + pred_prob
+
+            elif FeatureSetName_pool[Num_FeatureSet] in F_list_embeddings:
+
+                save_tmp_file_add = './tmp/' + nsa_name + '_CV_' + str(loop) + '_' + str(
+                    FeatureSetName_pool[Num_FeatureSet]) + '.pickle'
+                if not os.path.exists(save_tmp_file_add):
+                    # create tmp file
+                    inter_var = ML_temp_file(cv_num=loop, feature_set_name=FeatureSetName_pool[Num_FeatureSet],
+                                             clf_model=[],
+                                             fs_model=[], best_score_in_grid_search=[],
+                                             clf_scores=[], important_features=[],
+                                             important_features_name=[], doc_label=doc_label,
+                                             true_label=[doc_label[x] for x in test_index])
+
+                    print('-----------' + FeatureSetName_pool[Num_FeatureSet] + '--------------')
+
+                    # load training and testing data from embedding folder
+                    X_train = pd.read_csv(glob.glob('./features/'+FeatureSetName_pool[Num_FeatureSet]+'_embeddings/*_training_CV_'+str(loop)+'.csv')[0],index_col=0,header=0).values
+                    Y_train = [doc_label[x] for x in train_index]
+                    X_test = pd.read_csv(glob.glob('./features/'+FeatureSetName_pool[Num_FeatureSet]+'_embeddings/*_testing_CV_'+str(loop)+'.csv')[0],index_col=0,header=0).values
+                    Y_Test = [doc_label[x] for x in test_index]
+
+                    X_train = np.array(X_train)
+                    Y_train = np.array(Y_train)
+                    X_test = np.array(X_test)
+                    Y_Test = np.array(Y_Test)
+
+                    print('Info: shape of traing data:', X_train.shape)
+                    print(Y_train, Y_Test)
+
+                    Best_scores, pred_prob, Important_features, inter_var = Ensemble_Prediction(X_train, Y_train,
+                                                                                                X_test, Y_Test,
+                                                                                                Classifier_list,
+                                                                                                inter_var, Random_seed,
+                                                                                                str(FeatureSetName_pool[
+                                                                                                        Num_FeatureSet]))
+
+                    Best_scores_pool = Best_scores_pool + Best_scores
+                    pred_prob_pool = pred_prob_pool + pred_prob
+
+                    # # get selected features
+                    # get how many time current feature set was used
+                    selected_features_counting_num = selected_features_counting_num_pool[Num_FeatureSet]
+                    # get the feature selection number of current feature set
+                    selected_features_counting = selected_features_counting_pool[Num_FeatureSet]
+                    for item in Important_features:
+                        selected_features_counting_num = selected_features_counting_num + 1
+                        selected_features_counting[item] = selected_features_counting[item] + 1
+                    selected_features_counting_pool[Num_FeatureSet] = selected_features_counting
+                    selected_features_counting_num_pool[Num_FeatureSet] = selected_features_counting_num
+
+                    # save information to tmp file
+                    inter_var.clf_scores.append(pred_prob)
+                    inter_var.important_features_name.append(LoadFeatureNames_pool[Num_FeatureSet])
+                    save_tmp_file_add = './tmp/' + nsa_name + '_CV_' + str(loop) + '_' + str(
+                        inter_var.feature_set_name) + '.pickle'
+                    inter_var.to_pickle(save_tmp_file_add)
+                else:
+                    print('-----------' + FeatureSetName_pool[Num_FeatureSet] + '--------------')
+                    fr = open(save_tmp_file_add, 'rb')
+                    load_file = pk.load(fr)
+                    Best_scores = load_file.best_score_in_grid_search[0]
+                    pred_prob = load_file.clf_scores[0]
+
+                    Best_scores_pool = Best_scores_pool + Best_scores
+                    pred_prob_pool = pred_prob_pool + pred_prob
+
 
         # weight different classifiers
         voting_weight = classifier_output_weight(Best_scores_pool, baseline)
@@ -208,14 +340,15 @@ def main():
         pred_score = pred_score / pred_score.sum(axis=1, keepdims=1)
         pred = [list(set(doc_label))[item.index(max(item))] for item in pred_score.tolist()]
         end_time = time.time()
-        print('True: ', [doc_label[x] for x in test_index], 'Predict: ', pred, " time remine:", str(timedelta(seconds=(len(doc_label)-loop-1)*(end_time-start_time))))
-        #print(pred_score.tolist())
+        print('True: ', [doc_label[x] for x in test_index], 'Predict: ', pred, " time remine:",
+              str(timedelta(seconds=(len(doc_label) - loop - 1) * (end_time - start_time))))
+        # print(pred_score.tolist())
         # input()
 
-        scores=scores+pred_score.tolist()
-        predict_label=predict_label+pred
-        real_label=real_label+[doc_label[x] for x in test_index]
-        loop=loop+1
+        scores = scores + pred_score.tolist()
+        predict_label = predict_label + pred
+        real_label = real_label + [doc_label[x] for x in test_index]
+        loop = loop + 1
 
     predict_label = np.array(predict_label)
     acc_result = accuracy_score(real_label, predict_label)
@@ -236,19 +369,21 @@ def main():
     print(CR_print)
     print(CR)
     print(auc1)
+    print(counter)
 
-    feature_countings_rank=[]
-    feature_names_rank=[]
+    feature_countings_rank = []
+    feature_names_rank = []
     for item in range(len(selected_features_counting_num_pool)):
         # calculate the most salient features
-        features_rank_=np.argsort(-selected_features_counting_pool[item])
-        feature_countings_rank=feature_countings_rank+list(selected_features_counting_pool[item][features_rank_]/selected_features_counting_num_pool[item])
-        feature_names_rank=feature_names_rank+list(LoadFeatureNames_pool[item][i] for i in features_rank_)
+        features_rank_ = np.argsort(-selected_features_counting_pool[item])
+        feature_countings_rank = feature_countings_rank + list(
+            selected_features_counting_pool[item][features_rank_] / selected_features_counting_num_pool[item])
+        feature_names_rank = feature_names_rank + list(LoadFeatureNames_pool[item][i] for i in features_rank_)
 
-    features_rank_=np.argsort(-np.array(feature_countings_rank))
-    feature_countings_rank=np.array(feature_countings_rank)
-    feature_countings_rank=feature_countings_rank[features_rank_]
-    feature_names_rank=list(feature_names_rank[i] for i in features_rank_)
+    features_rank_ = np.argsort(-np.array(feature_countings_rank))
+    feature_countings_rank = np.array(feature_countings_rank)
+    feature_countings_rank = feature_countings_rank[features_rank_]
+    feature_names_rank = list(feature_names_rank[i] for i in features_rank_)
 
     # write result in to csv file
     with open(imp_features_add, 'a', newline='') as csvfile:
@@ -260,15 +395,15 @@ def main():
     # save all features into
     feature_used = 'All Featrues'
     if len(set(doc_label)) == 2:
-        write_result_two_class(feature_used, acc_result, auc1, CM, save_file_address, CR, baseline,Classifier_list)
+        write_result_two_class(feature_used, acc_result, auc1, CM, save_file_address, CR, baseline, Classifier_list)
     elif len(set(doc_label)) == 3:
-        write_result_three_class(feature_used, acc_result, auc1, CM, save_file_address, CR, baseline,Classifier_list)
+        write_result_three_class(feature_used, acc_result, auc1, CM, save_file_address, CR, baseline, Classifier_list)
     else:
         print("ERROR: too many class, please modify the output function.")
 
 
 def Ensemble_Prediction(X_train, Y_train, X_test, Y_test, Classifier_list, inter_var,
-                            Random_seed=21, FeatureSetName='Doc2Vec'):
+                        Random_seed=21, FeatureSetName='Doc2Vec'):
     '''
     This function is used to weight different classifiers based on the output of cross-validation grid search
 
@@ -299,7 +434,7 @@ def Ensemble_Prediction(X_train, Y_train, X_test, Y_test, Classifier_list, inter
     '''
 
     # applied cross-validation grid search
-    #model_cf, model_fs, best_scores = CV_Para_selection(X_train, Y_train, Classifier_list,Random_seed,FeatureSetName)
+    # model_cf, model_fs, best_scores = CV_Para_selection(X_train, Y_train, Classifier_list, Random_seed, FeatureSetName)
 
     # following code is used to manually determine the classifier and feature selection model
     model_cf=[]
@@ -308,16 +443,16 @@ def Ensemble_Prediction(X_train, Y_train, X_test, Y_test, Classifier_list, inter
     for model in Classifier_list:
         model_cf.append(get_model(model))
         model_fs.append(SelectPercentile(feature_selection.f_classif, percentile=100))
-        best_scores.append(0.6) # give weights to different classifiers
-
-    inter_var.clf_model.append(model_cf)
-    inter_var.fs_model.append(model_fs)
+        best_scores.append(0.8) # give weights to different classifiers
+    #
+    # inter_var.clf_model.append(model_cf)
+    # inter_var.fs_model.append(model_fs)
     inter_var.best_score_in_grid_search.append(best_scores)
 
-    predict_scores=[]
-    Important_features=[]
+    predict_scores = []
+    Important_features = []
     if len(model_cf) == len(model_fs):
-        #print("Info: predicting the testing data, feature len:", len(model_cf))
+        # print("Info: predicting the testing data, feature len:", len(model_cf))
         for id in range(0, len(model_cf)):
             clf_fs = model_fs[id]  # feature selection
             clf_classifier = model_cf[id]  # classifier model
@@ -330,7 +465,7 @@ def Ensemble_Prediction(X_train, Y_train, X_test, Y_test, Classifier_list, inter
             # num_of_feature=X_tensor.shape[1]
 
             pipe = Pipeline([
-                (pipeline_step_variance, VarianceThreshold(threshold=(0.0000000001))),
+                (pipeline_step_variance, VarianceThreshold(threshold=(0.0001))),
                 (pipeline_step_smote, SMOTE(random_state=Random_seed)),
                 (pipeline_step0, preprocessing.StandardScaler(copy=True, with_mean=True, with_std=True)),
                 (pipeline_step1, clf_fs),
@@ -343,14 +478,15 @@ def Ensemble_Prediction(X_train, Y_train, X_test, Y_test, Classifier_list, inter
 
             print("True:", Y_test, "Predict:", pred_class, 'Classifier:', Classifier_list[id])
 
-            del_small_var=pipe.named_steps[pipeline_step_variance].get_support(indices=True)
+            del_small_var = pipe.named_steps[pipeline_step_variance].get_support(indices=True)
             Important_features.append(del_small_var[pipe.named_steps[pipeline_step1].get_support(indices=True)])
             predict_scores.append(score.tolist())
 
-    #pred = [avg_score.tolist().index(max(avg_score))]
-    return best_scores,predict_scores,Important_features,inter_var
+    # pred = [avg_score.tolist().index(max(avg_score))]
+    return best_scores, predict_scores, Important_features, inter_var
 
-def classifier_output_weight(Best_scores_pool,baseline):
+
+def classifier_output_weight(Best_scores_pool, baseline):
     '''
     This function is used to weight different classifiers based on the output of cross-validation grid search
 
@@ -364,9 +500,9 @@ def classifier_output_weight(Best_scores_pool,baseline):
     weights: the weight of each classifier
 
     '''
-    weights=[]
+    weights = []
     for item in Best_scores_pool:
-        weight=0.5*np.log((1/baseline-1)*item/(1-item))
+        weight = 0.5 * np.log((1 / baseline - 1) * item / (1 - item))
         weights.append(weight)
 
     return weights

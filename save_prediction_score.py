@@ -138,8 +138,8 @@ def main():
     num_feature_sets=0
     if file_addresses != []:
         for file_address in file_addresses:
-            feature_set_name.append(os.path.basename(file_address).split(".")[0].split('_')[2])
-            cv_num.append(int(os.path.basename(file_address).split(".")[0].split('_')[1]))
+            feature_set_name.append(os.path.basename(file_address).split(".")[0].split('_')[3])
+            cv_num.append(int(os.path.basename(file_address).split(".")[0].split('_')[2]))
 
         feature_set_names=list(set(feature_set_name))
         feature_set_names.sort()
@@ -159,12 +159,12 @@ def main():
 
     # calculate the classification results
     start_loop=1
-    for item in list(combinations(range(num_feature_sets)))[1:]:
+    for item in [range(num_feature_sets)]:
         #print(list(item))
-        read_tmp_file(file_addresses,feature_set_names,list(item),doc_label,save_file_address,Classifier_list,baseline,start_loop,len(list(combinations(range(num_feature_sets)))[1:]),cv_num)
+        read_tmp_file(file_addresses,feature_set_names,list(item),doc_label,save_file_address,Classifier_list,baseline,start_loop,len(list(combinations(range(num_feature_sets)))[1:]),cv_num,common_file_names)
         start_loop=start_loop+1
 
-def read_tmp_file(file_addresses,feature_set_names,feature_sets_id,doc_label,save_file_address,Classifier_list,baseline,start_loop,end_loop,cv_num):
+def read_tmp_file(file_addresses,feature_set_names,feature_sets_id,doc_label,save_file_address,Classifier_list,baseline,start_loop,end_loop,cv_num,common_file_names):
 
     clf_acc_pool = []
     ConfuMatrix_pool = []
@@ -235,14 +235,17 @@ def read_tmp_file(file_addresses,feature_set_names,feature_sets_id,doc_label,sav
     print(CR)
     print(auc1)
 
-    # save all features into
-    feature_used = ' '.join([feature_set_names[x] for x in feature_sets_id])
-    if len(set(doc_label)) == 2:
-        write_result_two_class(feature_used, acc_result, auc1, CM, save_file_address, CR, baseline,Classifier_list)
-    elif len(set(doc_label)) == 3:
-        write_result_three_class(feature_used, acc_result, auc1, CM, save_file_address, CR, baseline,Classifier_list)
-    else:
-        print("ERROR: too many class, please modify the output function.")
+    df=pd.DataFrame(scores,index=common_file_names,columns=['Poss_H','Poss_S'])
+    pf=pd.read_csv('./NSAscore/NSA-all_score.csv',index_col=0,header=0)
+    common=list(set(common_file_names).intersection(pf.index.tolist()))
+    pf=pf.loc[common]
+    df=df.loc[common]
+    pp=pd.concat((df,pf),axis=1)
+
+    print(pp)
+    input()
+    pp.to_csv('./pobability_NSA_SH.csv')
+
 
 if __name__ == "__main__":
     main()

@@ -1,0 +1,5 @@
+Feature,,H,S,precision,recall,F-score,AUC,Acc,Baseline,classifier
+Conver Diction DisVoice Doc2Vec LDA LIWC OpenSmile corr,H,59,12,0.7468354430379747,0.8309859154929577,0.7866666666666666,0.9050650054171182,0.8171428571428572,0.5942857142857143,"['Logistic Regression', 'SVM', 'Gradient Boosting', 'AdaBoost', 'RandomForest']"
+Conver Diction DisVoice Doc2Vec LDA LIWC OpenSmile corr,S,20,84,0.875,0.8076923076923077,0.8400000000000001,0.9050650054171182,0.8171428571428572,0.5942857142857143,"['Logistic Regression', 'SVM', 'Gradient Boosting', 'AdaBoost', 'RandomForest']"
+Conver Diction DisVoice Doc2Vec LDA LIWC OpenSmile corr,H,59,12,0.7468354430379747,0.8309859154929577,0.7866666666666666,0.9050650054171182,0.8171428571428572,0.5942857142857143,"['Logistic Regression', 'SVM', 'Gradient Boosting', 'AdaBoost', 'RandomForest']"
+Conver Diction DisVoice Doc2Vec LDA LIWC OpenSmile corr,S,20,84,0.875,0.8076923076923077,0.8400000000000001,0.9050650054171182,0.8171428571428572,0.5942857142857143,"['Logistic Regression', 'SVM', 'Gradient Boosting', 'AdaBoost', 'RandomForest']"

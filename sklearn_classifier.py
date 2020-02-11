@@ -126,46 +126,46 @@ def CV_Para_selection(X_tensor, Y_tensor, Classifier_list,random_seed_num=21,Fea
                               )
         else:
             para_steps.update({pipeline_step1: [SelectPercentile(feature_selection.f_classif)],
-                               pipeline_step1 + '__percentile': [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+                               pipeline_step1 + '__percentile': [100]
                                }
                               )
         #print(cf_item)
         if cf_item == 'Logistic Regression':
             para_steps.update({pipeline_step2: [get_model('Logistic Regression')],
-                               pipeline_step2 + '__C': [0.01, 0.1, 1],
-                               pipeline_step2 + '__solver': [ 'liblinear', 'sag']
+                               # pipeline_step2 + '__C': [0.01, 0.1, 1],
+                               # pipeline_step2 + '__solver': [ 'liblinear', 'sag']
                                }
                               )
         elif cf_item == 'SVM':
             para_steps.update({pipeline_step2: [get_model('SVM')],
                                pipeline_step2 + '__kernel': ['linear', 'rbf'],
-                               pipeline_step2 + '__C': [0.1, 0.5, 1],
-                               pipeline_step2 + '__gamma': [0.1, 0.01, 0.001]
+                               # pipeline_step2 + '__C': [0.1, 0.5, 1],
+                               # pipeline_step2 + '__gamma': [0.1, 0.01, 0.001]
                                }
                               )
         elif cf_item == 'Gradient Boosting':
             para_steps.update({pipeline_step2: [get_model('Gradient Boosting')],
-                               pipeline_step2 + '__learning_rate': [0.1, 0.5, 1],
-                               pipeline_step2 + '__max_depth': [3, 4, 5, 7],
-                               pipeline_step2 + '__n_estimators': [100, 150, 200]
+                               # pipeline_step2 + '__learning_rate': [0.1, 0.5, 1],
+                               # pipeline_step2 + '__max_depth': [3, 4, 5, 7],
+                               # pipeline_step2 + '__n_estimators': [100, 150, 200]
                                }
                               )
         elif cf_item == 'AdaBoost':
             para_steps.update({pipeline_step2: [get_model('AdaBoost')],
-                               pipeline_step2 + '__learning_rate': [0.1, 0.5, 1],
-                               pipeline_step2 + '__n_estimators': [50, 100, 150]
+                               # pipeline_step2 + '__learning_rate': [0.1, 0.5, 1],
+                               # pipeline_step2 + '__n_estimators': [50, 100, 150]
                                }
                               )
         elif cf_item == 'RandomForest':
             para_steps.update({pipeline_step2: [get_model('RandomForest')],
-                               pipeline_step2 + '__n_estimators': [100, 150, 200],
-                               pipeline_step2 + '__max_depth': [3, 5, 7, None]
+                               # pipeline_step2 + '__n_estimators': [100, 150, 200],
+                               # pipeline_step2 + '__max_depth': [3, 5, 7, None]
                                }
                               )
         elif cf_item == 'MLP':
             para_steps.update({pipeline_step2: [get_model('MLP')],
-                               pipeline_step2 + '__hidden_layer_sizes': [100, 150, 200],
-                               pipeline_step2 + '__activation': ['identity', 'logistic', 'tanh', 'relu']
+                               # pipeline_step2 + '__hidden_layer_sizes': [100, 150, 200],
+                               # pipeline_step2 + '__activation': ['identity', 'logistic', 'tanh', 'relu']
                                }
                               )
         else:
@@ -175,7 +175,7 @@ def CV_Para_selection(X_tensor, Y_tensor, Classifier_list,random_seed_num=21,Fea
 
         skf = StratifiedKFold(n_splits=10,random_state=random_seed_num)
         loo = LeaveOneOut()
-        grid = GridSearchCV(pipe, cv=skf, n_jobs=4, param_grid=param_grid, return_train_score="False")
+        grid = GridSearchCV(pipe, cv=skf, n_jobs=16, param_grid=param_grid, return_train_score="False")
         # print(X_tensor,Y_tensor)
         grid.fit(X_tensor, Y_tensor)
         # print(grid.cv_results_)
@@ -201,28 +201,28 @@ def get_model(name):
 
     random_seed_num=21
     if name == 'Logistic Regression':
-        return LogisticRegression(max_iter=10000000,random_state=random_seed_num)
+        return LogisticRegression(max_iter=100000,random_state=random_seed_num,class_weight="balanced")
     elif name == 'SVM':
-        return SVC(kernel='linear', probability=True, max_iter=10000000,random_state=random_seed_num)
+        return SVC(kernel='linear', probability=True, max_iter=100000,random_state=random_seed_num,class_weight="balanced")
     elif name == 'Decision tree':
-        return tree.DecisionTreeClassifier(random_state=random_seed_num)
+        return tree.DecisionTreeClassifier(random_state=random_seed_num,class_weight="balanced")
     elif name == 'SVC':
-        return SVC(kernel='poly', probability=True, max_iter=10000000,random_state=random_seed_num)
+        return SVC(kernel='poly', probability=True, max_iter=100000,random_state=random_seed_num,class_weight="balanced")
     elif name == 'SVM_rbf':
-        return SVC(kernel='rbf', probability=True, max_iter=10000000,random_state=random_seed_num)
+        return SVC(kernel='rbf', probability=True, max_iter=100000,random_state=random_seed_num,class_weight="balanced")
     elif name == 'MultinomialNB':
         return MultinomialNB()
     elif name == 'Gradient Boosting':
-        return GradientBoostingClassifier(random_state=random_seed_num)
+        return GradientBoostingClassifier(n_estimators=400, random_state=random_seed_num)
     elif name == 'KNeighborsClassifier':
         return KNeighborsClassifier(3)
     elif name == 'MLP':
-        return MLPClassifier(random_state=random_seed_num)
+        return MLPClassifier(solver='lbfgs', max_iter=10000,random_state=random_seed_num)
     elif name == 'NaiveBayes':
         return GaussianNB()
     elif name == "AdaBoost":
-        return AdaBoostClassifier(random_state=random_seed_num)
+        return AdaBoostClassifier(n_estimators=400,random_state=random_seed_num)
     elif name == "RandomForest":
-        return RandomForestClassifier(random_state=random_seed_num,class_weight='balanced')
+        return RandomForestClassifier(max_depth=7, n_estimators=400,random_state=random_seed_num,class_weight="balanced")
     else:
         raise ValueError('No such model')
